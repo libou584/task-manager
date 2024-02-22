@@ -1,5 +1,6 @@
 from flask import Flask, g, render_template, request
 import sqlite3
+import datetime
 # import os
 
 
@@ -28,30 +29,33 @@ def close_connection(exception) :
 
 @app.route("/")
 def display() :
-	c = get_db().cursor()
-	content = "<!DOCTYPE html><title>&#x1F5D2; Task Manager</title>"
-	# content += "<h1>Task Manager</h1>"
-	content += "<a href = '/add_tag'>Add a tag</a>"
-	content += "<h2>Tasks</h2>"
-	c.execute("SELECT * FROM Tasks ;")
-	content += "<table><tr><td>Title</td><td>Description</td><td>Status</td><td>Date</td></tr>"
-	for tpl in c.fetchall() :
-		content += render_template("line_temp.html", title = tpl[1], description = tpl[2], status = tpl[3], date = tpl[4])
-	content += "</table>"
-	return content
+	connection = get_db()
+	c = connection.cursor()
+	c.execute("SELECT title, description, tag FROM Tasks WHERE status = 'ndone' ORDER BY priority ;")
+	task_list = c.fetchall()
+	print(task_list)
+	return render_template("homepage.html", task_list = task_list)
 
 
-@app.route("/tags/")
-def tags() :
-	c = get_db().cursor()
-	c.execute("SELECT name FROM Tags;")
-	tag_list = c.fetchall()
-	return render_template("tags.html", tag_list = tag_list)
-
-
-@app.route("/add_tag/", methods = ['POST'])
-def add_tag() :
-	c = get_db().cursor()
-	name = request.form["name"]
-	c.execute(f"INSERT INTO Tags (id, name) VALUES (SELECT MAX(id) FROM Tags, {name})")
-	return render_template("tag_form.html")
+@app.route("/add_task", methods = ['GET', 'POST'])
+def add_task() :
+	if request.method == 'POST' :
+		connection = get_db()
+		c = connection.cursor()
+		c.execute("SELECT MAX(id)+1 FROM Tasks ;")
+		id = c.fetchall()[0][0]
+		if id is None :
+			id = 0
+		else :
+			id = int(id)
+		title = request.form['title']
+		description = request.form['description']
+		tag = request.form['tag']
+		priority = request.form['priority']
+		if not priority : 
+			priority = 5
+		status = "ndone"
+		date = str(datetime.date.today())
+		c.execute(f"INSERT INTO Tasks(id, title, description, status, date, tag, priority) VALUES (?, ?, ?, ?, ?, ?, ?) ;", (id, title, description, status, date, tag, priority))
+		connection.commit()
+	return render_template("add_task.html")

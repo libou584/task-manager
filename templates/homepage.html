@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<title>&#x1F5D2; Task Manager</title>
+<a href = "/add_task">
+    Add a task
+</a>
+<h2>
+    Tasks
+</h2>
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Description</td>
+        <td>Tag</td>
+    </tr>
+    {% for (title, description, tag) in task_list : %}
+    <tr>
+        <td>{{title}}</td>
+        <td>{{description}}</td>
+        <td>{{tag}}</td>
+    </tr>
+    {% endfor %}
+</table>
