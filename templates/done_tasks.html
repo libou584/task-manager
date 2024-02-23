@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<title>&#x1F5D2; Task Manager</title>
+<a href = "/">
+    Homepage
+</a>
+<h2>
+    Done Tasks
+</h2>
+{% for (id, title, description, tag) in done_task_list : %}
+<div>
+    <form method = 'POST' action = "/done_tasks">
+        <nobr>
+            {{title}}   {{description}}   {{tag}}
+            <button type = "submit" name = "undo" value = "{{id}}">Undo</button>
+        </nobr>
+    </form>
+</div>
+{% endfor %}
