@@ -27,13 +27,20 @@ def close_connection(exception) :
 		db.close()
 
 
-@app.route("/")
+@app.route("/", methods = ['GET', 'POST'])
 def display() :
 	connection = get_db()
 	c = connection.cursor()
-	c.execute("SELECT title, description, tag FROM Tasks WHERE status = 'ndone' ORDER BY priority ;")
+	c.execute("SELECT id, title, description, tag FROM Tasks WHERE status = 'ndone' ORDER BY priority ;")
 	task_list = c.fetchall()
-	print(task_list)
+	# id_list = [str(task[0]) for task in task_list]
+	# print(id_list)
+	# id = request.args.get("button")
+	# print(id)
+	# if request.method == 'POST' :
+	# 	for id in id_list :
+	# 		btn_id = request.form[id]
+	# 	print(btn_id)
 	return render_template("homepage.html", task_list = task_list)
 
 
