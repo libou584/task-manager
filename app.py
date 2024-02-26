@@ -45,13 +45,15 @@ def homepage() :
 	return render_template("homepage.html", task_list = task_list)
 
 
-@app.route("/<int:id>/modify")
+@app.route("/<int:id>/modify", methods = ['GET', 'POST'])
 def modify(id : int) :
 	connection = get_db()
 	c = connection.cursor()
 	c.execute('SELECT title, description, tag, priority FROM Tasks WHERE id = (?) ;', (id, ))
 	title, description, tag, priority = c.fetchall()[0]
+	print(priority)
 	if request.method == 'POST' :
+		print("oui")
 		title = request.form['title']
 		description = request.form['description']
 		tag = request.form['tag']
@@ -60,7 +62,8 @@ def modify(id : int) :
 			priority = 5
 		c.execute("UPDATE Tasks SET title = (?), description = (?), tag = (?), priority = (?) WHERE id = (?)", (title, description, tag, priority, id))
 		connection.commit()
-	return render_template("modify.html", title = title)
+		return redirect(url_for("homepage"))
+	return render_template("modify.html", id = id, title = title, description = description, tag = tag, priority = priority)
 
 
 @app.route("/add_task", methods = ['GET', 'POST'])
