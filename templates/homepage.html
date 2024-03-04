@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<title>&#x1F5D2; Task Manager</title>
-<a href = "/add_task">
-    Add a task
-</a>
-<a href = "/done_tasks">
-    See done tasks
-</a>
-<h2>
-    Tasks
-</h2>
-{% for (id, title, description, tag) in task_list : %}
-<div>
-    <form method = 'POST' action = "/">
-        <nobr>
-            {{title}}   {{description}}   {{tag}}
-            <button type = "submit" name = "modify" value = "{{id}}">Modify</button>
-            <button type = "submit" name = "done" value = "{{id}}">Done</button>
-        </nobr>
-    </form>
-</div>
-{% endfor %}
+<head>
+    <link rel="stylesheet" href="/static/styles/style.css" />
+    <title>&#x1F5D2; Task Manager</title>
+</head>
+<body>
+    <a href = "/add_task">
+        Add a task
+    </a>
+    <a href = "/done_tasks">
+        See done tasks
+    </a>
+    <h2 class = "title">
+        Tasks
+    </h2>
+    {% for (id, title, description, tag) in task_list : %}
+    <div class = "task">
+        <form method = 'POST' action = "/">
+            <nobr>
+                {{title}}   {{description}}   {{tag}}
+                <button type = "submit" name = "modify" value = "{{id}}">Modify</button>
+                <button type = "submit" name = "done" value = "{{id}}">Done</button>
+            </nobr>
+        </form>
+    </div>
+    {% endfor %}
+</body>

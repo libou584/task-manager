@@ -1,14 +1,14 @@
 from flask import Flask, g, render_template, request, redirect, url_for
 import sqlite3
 import datetime
-# import os
+import os
 
 
 # TEMPLATE_DIR = os.path.abspath('./templates')
-# STATIC_DIR = os.path.abspath('./templates/static')
+STATIC_DIR = os.path.abspath('./templates/static')
 
 
-app = Flask(__name__) # template_folder = TEMPLATE_DIR, static_folder=STATIC_DIR
+app = Flask(__name__, static_folder = STATIC_DIR) # template_folder = TEMPLATE_DIR, 
 DATABASE = "tasks.db"
 
 
