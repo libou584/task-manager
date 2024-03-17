@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<title>&#x1F5D2; Task Manager</title>
+<head>
+    <link rel="stylesheet" href="/static/styles/style.css" />
+    <title>&#x1F5D2; Task Manager</title>
+</head>
 <a href = "/">
     Homepage
 </a>
@@ -16,5 +19,5 @@
         <input type = "radio" id = "{{i}}" name = "priority" value = {{i}} {% if i == priority %} checked {% endif %}>
         <label for = "{{i}}">{{i}}</label><br>
     {% endfor %}
-    <input type = "submit" value = "Modify">
+    <input type = "submit" value = "Modify" class="btn">
 </form>
